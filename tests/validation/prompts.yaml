@@ -1,0 +1,192 @@
+# Validation prompts for the text-to-svg evaluator.
+#
+# These stay inside the simple-shapes product boundary: every prompt should
+# be describable as an arrangement of basic shapes, never a pictorial scene.
+#
+# Entry format:
+#   id         stable short id
+#   prompt     natural-language request sent to the LLM
+#   category   tag list (minimal, symbolic, layout, style, abstract)
+#   strictness strict | medium | loose (advisory; does not change scoring)
+#   required   must-haves; contribute 70% of the score
+#   preferred  nice-to-haves; contribute 30%
+#   anti       penalties that subtract 0.1 per fire (capped at 0.3)
+#
+# See score_sweep.py for the list of supported check kinds.
+
+prompts:
+  - id: red_circle
+    prompt: "simple red circle on white"
+    category: [minimal]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: shape_count, type: "circle", count: 1}
+      - {kind: dominant_color_family, color: "red"}
+    preferred:
+      - {kind: centered_shape, type: "circle", tolerance: 0.2}
+      - {kind: max_shape_count, count: 3}
+    anti:
+      - {kind: extra_shapes_over, max_allowed: 4}
+      - {kind: text_elements_present}
+
+  - id: three_blue_squares
+    prompt: "three blue squares in a row"
+    category: [minimal, layout]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: shape_count, type: "rect", count: 3}
+      - {kind: dominant_color_family, color: "blue"}
+      - {kind: similar_size, type: "rect", tolerance: 0.2}
+    preferred:
+      - {kind: horizontal_alignment, type: "rect", tolerance: 0.2}
+      - {kind: equal_x_spacing, type: "rect", tolerance: 0.25}
+    anti:
+      - {kind: extra_shapes_over, max_allowed: 5}
+
+  - id: green_triangle
+    prompt: "green triangle with black outline"
+    category: [minimal, style]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: has_any_shape_type, types: ["polygon", "polyline"]}
+      - {kind: dominant_color_family, color: "green"}
+    preferred:
+      - {kind: max_shape_count, count: 3}
+    anti:
+      - {kind: extra_shapes_over, max_allowed: 4}
+      - {kind: text_elements_present}
+
+  - id: five_same_circles
+    prompt: "five circles of the same size"
+    category: [minimal, layout]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: shape_count, type: "circle", count: 5}
+      - {kind: equal_radius, type: "circle", tolerance: 0.12}
+    preferred:
+      - {kind: distinct_centers, type: "circle", min_distance_factor: 0.5}
+    anti:
+      - {kind: extra_shapes_over, max_allowed: 6}
+
+  - id: star_11_point
+    prompt: "an eleven-point star in warm colors"
+    category: [symbolic, style]
+    strictness: medium
+    required:
+      - {kind: not_fallback}
+      - {kind: has_any_shape_type, types: ["star", "polygon"]}
+      - {kind: dominant_color_family, color: "warm"}
+    preferred:
+      - {kind: centered_composition, tolerance: 0.2}
+      - {kind: max_shape_count, count: 4}
+    anti:
+      - {kind: text_elements_present}
+
+  - id: olympic_rings
+    prompt: "five interlocking rings like the olympics logo using simple shapes"
+    category: [symbolic, layout]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: shape_count, type: "circle", count: 5}
+      - {kind: fill_none_for_all, type: "circle"}
+      - {kind: equal_radius, type: "circle", tolerance: 0.12}
+      - {kind: distinct_centers, type: "circle", min_distance_factor: 0.4}
+    preferred:
+      - {kind: two_row_layout, type: "circle", tolerance: 0.2}
+      - {kind: equal_x_spacing, type: "circle", tolerance: 0.3}
+      - {kind: palette_contains, colors: ["blue", "yellow", "red", "green", "mono"], min_matches: 3}
+    anti:
+      - {kind: text_elements_present}
+      - {kind: extra_shapes_over, max_allowed: 6}
+
+  - id: flower_six_petals
+    prompt: "a flower with six petals and two leaves"
+    category: [symbolic]
+    strictness: medium
+    required:
+      - {kind: not_fallback}
+      - {kind: min_shape_count, count: 6}
+      - {kind: distinct_types, count: 2}
+    preferred:
+      - {kind: centered_composition, tolerance: 0.3}
+      - {kind: radial_layout_present, min_count: 5}
+    anti:
+      - {kind: text_elements_present}
+
+  - id: sun_eight_rays
+    prompt: "a sun with eight rays"
+    category: [symbolic, layout]
+    strictness: medium
+    required:
+      - {kind: not_fallback}
+      - {kind: min_shape_count, count: 8}
+      - {kind: has_shape_type, type: "circle"}
+      - {kind: has_any_shape_type, types: ["line", "polygon", "polyline"]}
+    preferred:
+      - {kind: centered_composition, tolerance: 0.2}
+      - {kind: radial_layout_present, min_count: 6}
+    anti:
+      - {kind: text_elements_present}
+
+  - id: moon_three_stars
+    prompt: "a crescent moon and three stars"
+    category: [symbolic, minimal]
+    strictness: medium
+    required:
+      - {kind: not_fallback}
+      - {kind: min_shape_count, count: 4}
+      - {kind: max_shape_count, count: 10}
+      - {kind: has_any_shape_type, types: ["circle", "star", "polygon"]}
+    preferred:
+      - {kind: distinct_types, count: 2}
+    anti:
+      - {kind: text_elements_present}
+
+  - id: centered_emblem
+    prompt: "a centered emblem with radial symmetry using simple shapes"
+    category: [layout, abstract]
+    strictness: medium
+    required:
+      - {kind: not_fallback}
+      - {kind: min_shape_count, count: 3}
+      - {kind: centered_composition, tolerance: 0.2}
+    preferred:
+      - {kind: radial_layout_present, min_count: 4}
+      - {kind: max_shape_count, count: 20}
+    anti:
+      - {kind: mostly_empty_canvas, max_fraction: 0.08}
+      - {kind: text_elements_present}
+
+  - id: checkerboard_four
+    prompt: "a checkerboard made of four alternating squares"
+    category: [minimal, layout]
+    strictness: strict
+    required:
+      - {kind: not_fallback}
+      - {kind: shape_count, type: "rect", count: 4}
+      - {kind: similar_size, type: "rect", tolerance: 0.2}
+    preferred:
+      - {kind: two_row_layout, type: "rect", tolerance: 0.2}
+      - {kind: palette_contains, colors: ["mono", "blue", "red"], min_matches: 2}
+    anti:
+      - {kind: extra_shapes_over, max_allowed: 6}
+
+  - id: abstract_badge
+    prompt: "an abstract badge using triangles and circles"
+    category: [abstract, layout]
+    strictness: loose
+    required:
+      - {kind: not_fallback}
+      - {kind: has_shape_type, type: "circle"}
+      - {kind: has_any_shape_type, types: ["polygon", "polyline"]}
+      - {kind: min_shape_count, count: 3}
+    preferred:
+      - {kind: centered_composition, tolerance: 0.25}
+      - {kind: max_shape_count, count: 15}
+    anti:
+      - {kind: text_elements_present}

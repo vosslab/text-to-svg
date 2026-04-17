@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text to Scene</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="panel controls">
+      <h1>Text to Scene</h1>
+      <label>
+        Prompt
+        <textarea id="prompt" rows="6">five interlocking rings like the olympics logo</textarea>
+      </label>
+      <label>
+        Model
+        <select id="model">
+          <option value="">Loading models...</option>
+        </select>
+      </label>
+      <div class="row">
+        <label>Seed <input id="seed" type="number" value="1"></label>
+        <label>Width <input id="width" type="number" value="800"></label>
+        <label>Height <input id="height" type="number" value="800"></label>
+      </div>
+      <div class="row">
+        <button id="generate">Generate</button>
+        <button id="reset" type="button">Reset JSON</button>
+      </div>
+      <pre id="status"></pre>
+    </section>
+    <section class="panel preview">
+      <div id="fallback-banner" class="fallback-banner" hidden></div>
+      <div id="svg-host"></div>
+    </section>
+    <section class="panel inspector">
+      <h2>Scene JSON</h2>
+      <textarea id="scene-json" rows="18"></textarea>
+      <details>
+        <summary>Raw model output</summary>
+        <textarea id="raw-output" rows="10" readonly></textarea>
+      </details>
+      <details>
+        <summary>Retry output (if any)</summary>
+        <textarea id="retry-output" rows="8" readonly></textarea>
+      </details>
+    </section>
+  </main>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

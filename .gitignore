@@ -1,2 +1,10 @@
 report_*.txt
 .DS_Store
+local-llm-wrapper/
+output_sweep/
+web/node_modules/
+web/package-lock.json
+web/app.js
+web/app.js.map
+__pycache__/
+.pytest_cache/

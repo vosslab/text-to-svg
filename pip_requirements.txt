@@ -1,0 +1,2 @@
+pyyaml  # YAML parsing for validation prompt catalogs
+ollama  # Client library used by the vendored local-llm-wrapper

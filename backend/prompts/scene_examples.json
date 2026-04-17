@@ -1,0 +1,59 @@
+[
+  {
+    "_when": "A single 5-point star (simplest symbolic scene)",
+    "canvas": {"width": 400, "height": 400},
+    "shapes": [
+      {"type": "star", "cx": 200, "cy": 200, "points": 5, "outerRadius": 140, "innerRadius": 60, "rotation": -90, "fill": "#ffcc33", "stroke": "#7a5414", "strokeWidth": 3}
+    ]
+  },
+  {
+    "_when": "Three concentric squares (nested rectangles, pure geometry)",
+    "canvas": {"width": 500, "height": 500},
+    "shapes": [
+      {"type": "rect", "x": 50, "y": 50, "width": 400, "height": 400, "fill": "none", "stroke": "#264653", "strokeWidth": 6},
+      {"type": "rect", "x": 130, "y": 130, "width": 240, "height": 240, "fill": "none", "stroke": "#2a9d8f", "strokeWidth": 6},
+      {"type": "rect", "x": 210, "y": 210, "width": 80, "height": 80, "fill": "#e9c46a", "stroke": "none"}
+    ]
+  },
+  {
+    "_when": "A pinwheel of six triangles rotated around a center (group + transform)",
+    "canvas": {"width": 400, "height": 400},
+    "shapes": [
+      {
+        "type": "group",
+        "transform": "translate(200 200)",
+        "shapes": [
+          {"type": "polygon", "points": [[0, 0], [80, -20], [80, 20]], "fill": "#e63946", "stroke": "none"},
+          {"type": "polygon", "points": [[0, 0], [40, 69], [20, 78]], "fill": "#f4a261", "stroke": "none"},
+          {"type": "polygon", "points": [[0, 0], [-40, 69], [-56, 56]], "fill": "#e9c46a", "stroke": "none"},
+          {"type": "polygon", "points": [[0, 0], [-80, 20], [-80, -20]], "fill": "#2a9d8f", "stroke": "none"},
+          {"type": "polygon", "points": [[0, 0], [-40, -69], [-20, -78]], "fill": "#457b9d", "stroke": "none"},
+          {"type": "polygon", "points": [[0, 0], [40, -69], [56, -56]], "fill": "#8e44ad", "stroke": "none"}
+        ]
+      }
+    ]
+  },
+  {
+    "_when": "A central disk with eight radiating lines (rays pattern)",
+    "canvas": {"width": 480, "height": 480},
+    "shapes": [
+      {"type": "circle", "cx": 240, "cy": 240, "r": 60, "fill": "#f4a261", "stroke": "none"},
+      {"type": "line", "x1": 240, "y1": 70, "x2": 240, "y2": 170, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 240, "y1": 310, "x2": 240, "y2": 410, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 70, "y1": 240, "x2": 170, "y2": 240, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 310, "y1": 240, "x2": 410, "y2": 240, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 120, "y1": 120, "x2": 190, "y2": 190, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 290, "y1": 190, "x2": 360, "y2": 120, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 120, "y1": 360, "x2": 190, "y2": 290, "stroke": "#f4a261", "strokeWidth": 6},
+      {"type": "line", "x1": 290, "y1": 290, "x2": 360, "y2": 360, "stroke": "#f4a261", "strokeWidth": 6}
+    ]
+  },
+  {
+    "_when": "Single ellipse inside a rounded rectangle (mixed primitives, stroke-only)",
+    "canvas": {"width": 600, "height": 400},
+    "shapes": [
+      {"type": "rect", "x": 40, "y": 40, "width": 520, "height": 320, "rx": 40, "ry": 40, "fill": "none", "stroke": "#34495e", "strokeWidth": 5},
+      {"type": "ellipse", "cx": 300, "cy": 200, "rx": 200, "ry": 120, "fill": "none", "stroke": "#e76f51", "strokeWidth": 4}
+    ]
+  }
+]
