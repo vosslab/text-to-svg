@@ -1,11 +1,14 @@
 # Text to SVG
 
-A local experiment that turns short natural-language descriptions into simple
-shape-based SVG scenes. A Python backend calls the vendored
-[local-llm-wrapper/](local-llm-wrapper/) (Apple foundation model or an Ollama
-model) to emit a small scene, and a TypeScript frontend renders it in the
-browser. For geometric compositions like "five interlocking rings" or "an
-eleven-point star", not for pictorial illustration.
+Text to SVG turns short natural-language prompts into simple SVG scenes you can
+view in the browser. Describe a geometric composition, icon, symbol, or small
+scene and the app generates a shape-based result from a local model, then
+renders the SVG immediately on the page.
+
+It is designed for structured, drawable ideas such as "five interlocking rings",
+"an eleven-point star", or "a small house with a tree", not photorealistic or
+pictorial illustration. The app runs locally and keeps the model interaction
+contained to a lightweight prompt-to-scene workflow.
 
 Status: experimental, local-only.
 

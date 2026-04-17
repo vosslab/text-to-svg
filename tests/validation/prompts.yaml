@@ -53,6 +53,7 @@ prompts:
       - {kind: not_fallback}
       - {kind: has_any_shape_type, types: ["polygon", "polyline"]}
       - {kind: dominant_color_family, color: "green"}
+      - {kind: all_strokes_non_null, type: "polygon"}
     preferred:
       - {kind: max_shape_count, count: 3}
     anti:
@@ -96,6 +97,8 @@ prompts:
       - {kind: fill_none_for_all, type: "circle"}
       - {kind: equal_radius, type: "circle", tolerance: 0.12}
       - {kind: distinct_centers, type: "circle", min_distance_factor: 0.4}
+      - {kind: all_strokes_non_null, type: "circle"}
+      - {kind: stroke_colors_distinct, type: "circle", min: 3}
     preferred:
       - {kind: two_row_layout, type: "circle", tolerance: 0.2}
       - {kind: equal_x_spacing, type: "circle", tolerance: 0.3}
@@ -103,6 +106,7 @@ prompts:
     anti:
       - {kind: text_elements_present}
       - {kind: extra_shapes_over, max_allowed: 6}
+      - {kind: has_null_strokes}
 
   - id: flower_six_petals
     prompt: "a flower with six petals and two leaves"

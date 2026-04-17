@@ -34,18 +34,18 @@
     ]
   },
   {
-    "_when": "A central disk with eight radiating lines (rays pattern)",
+    "_when": "Compass tick ring: central square with eight short ticks around it (teaches radial placement without being a 'sun with rays' recipe)",
     "canvas": {"width": 480, "height": 480},
     "shapes": [
-      {"type": "circle", "cx": 240, "cy": 240, "r": 60, "fill": "#f4a261", "stroke": "none"},
-      {"type": "line", "x1": 240, "y1": 70, "x2": 240, "y2": 170, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 240, "y1": 310, "x2": 240, "y2": 410, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 70, "y1": 240, "x2": 170, "y2": 240, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 310, "y1": 240, "x2": 410, "y2": 240, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 120, "y1": 120, "x2": 190, "y2": 190, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 290, "y1": 190, "x2": 360, "y2": 120, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 120, "y1": 360, "x2": 190, "y2": 290, "stroke": "#f4a261", "strokeWidth": 6},
-      {"type": "line", "x1": 290, "y1": 290, "x2": 360, "y2": 360, "stroke": "#f4a261", "strokeWidth": 6}
+      {"type": "rect", "x": 200, "y": 200, "width": 80, "height": 80, "fill": "#2a9d8f", "stroke": "none"},
+      {"type": "line", "x1": 380, "y1": 240, "x2": 410, "y2": 240, "stroke": "#264653", "strokeWidth": 6},
+      {"type": "line", "x1": 70, "y1": 240, "x2": 100, "y2": 240, "stroke": "#264653", "strokeWidth": 6},
+      {"type": "line", "x1": 240, "y1": 70, "x2": 240, "y2": 100, "stroke": "#264653", "strokeWidth": 6},
+      {"type": "line", "x1": 240, "y1": 380, "x2": 240, "y2": 410, "stroke": "#264653", "strokeWidth": 6},
+      {"type": "line", "x1": 340, "y1": 140, "x2": 361, "y2": 119, "stroke": "#264653", "strokeWidth": 4},
+      {"type": "line", "x1": 119, "y1": 119, "x2": 140, "y2": 140, "stroke": "#264653", "strokeWidth": 4},
+      {"type": "line", "x1": 340, "y1": 340, "x2": 361, "y2": 361, "stroke": "#264653", "strokeWidth": 4},
+      {"type": "line", "x1": 119, "y1": 361, "x2": 140, "y2": 340, "stroke": "#264653", "strokeWidth": 4}
     ]
   },
   {

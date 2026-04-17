@@ -474,6 +474,38 @@ def _check_outline_only_bias(cell, r):
 	return cell["heuristics"]["strokeRatio"] > cell["heuristics"]["fillRatio"]
 
 
+def _check_all_strokes_non_null(cell, r):
+	# every shape of the requested type must have a real hex stroke, not
+	# None/null and not the literal "none". This catches the common failure
+	# where a model emits structurally correct shapes with no color binding.
+	shapes = _shapes_of_type(cell, r["type"])
+	if not shapes:
+		return False
+	for shape in shapes:
+		stroke = shape.get("stroke")
+		if not isinstance(stroke, str):
+			return False
+		if stroke.strip().lower() == "none":
+			return False
+	return True
+
+
+def _check_stroke_colors_distinct(cell, r):
+	# count the number of distinct stroke color values on a shape type;
+	# lets us score prompts like "olympic rings in five different colors"
+	shape_type = r.get("type")
+	if shape_type:
+		shapes = _shapes_of_type(cell, shape_type)
+	else:
+		shapes = _iter_leaf_shapes(cell["scene"].get("shapes", []))
+	colors: set[str] = set()
+	for shape in shapes:
+		stroke = shape.get("stroke")
+		if isinstance(stroke, str) and stroke.startswith("#"):
+			colors.add(stroke.strip().lower())
+	return len(colors) >= r.get("min", 2)
+
+
 # ---- anti-checks (return True when the penalty should FIRE) ----
 def _anti_text_elements_present(cell, r):
 	# the JSON scene has no text type, so this looks at the raw reply as
@@ -514,6 +546,22 @@ def _anti_dominant_cool_colors(cell, r):
 	return cool > warm and cool > 0
 
 
+def _anti_has_null_strokes(cell, r):
+	# fires when ANY leaf shape has stroke in {None, "none"} — signal that
+	# the model emitted geometry without binding colors to it
+	leaves = _iter_leaf_shapes(cell["scene"].get("shapes", []))
+	for shape in leaves:
+		stroke = shape.get("stroke")
+		if stroke is None:
+			return True
+		if isinstance(stroke, str) and stroke.strip().lower() == "none":
+			# only count as "null" when the shape has no fill either
+			fill = shape.get("fill", "none")
+			if isinstance(fill, str) and fill.strip().lower() == "none":
+				return True
+	return False
+
+
 RULE_HANDLERS = {
 	"not_fallback": _check_not_fallback,
 	"shape_count": _check_shape_count,
@@ -538,6 +586,8 @@ RULE_HANDLERS = {
 	"palette_contains": _check_palette_contains,
 	"dark_palette_bias": _check_dark_palette_bias,
 	"outline_only_bias": _check_outline_only_bias,
+	"all_strokes_non_null": _check_all_strokes_non_null,
+	"stroke_colors_distinct": _check_stroke_colors_distinct,
 }
 
 ANTI_HANDLERS = {
@@ -546,6 +596,7 @@ ANTI_HANDLERS = {
 	"mostly_empty_canvas": _anti_mostly_empty_canvas,
 	"single_shape_only": _anti_single_shape_only,
 	"dominant_cool_colors": _anti_dominant_cool_colors,
+	"has_null_strokes": _anti_has_null_strokes,
 }
 
 

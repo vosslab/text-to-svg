@@ -21,6 +21,22 @@ from backend.scene_model import GenerateSceneRequest, GenerateSceneResponse, nor
 SCENE_TAG = "scene"
 MAX_TOKENS = 1600
 
+# Model-name prefixes whose Ollama builds support the chat API `think` flag.
+# Matched case-insensitively against the model name the user picked.
+THINKING_MODEL_PREFIXES = (
+	"gemma3",
+	"gemma4",
+	"qwen3",
+	"deepseek-r1",
+)
+
+
+def _model_supports_thinking(name: str) -> bool:
+	if not name:
+		return False
+	lowered = name.lower()
+	return any(lowered.startswith(prefix) for prefix in THINKING_MODEL_PREFIXES)
+
 
 #============================================
 def _strip_example_markers(example: dict) -> dict:
@@ -88,7 +104,9 @@ def _build_client(model_override: str | None) -> llm.LLMClient:
 	# local Ollama does not have that model installed.
 	transports: list = [llm.AppleTransport()]
 	if model_override:
-		transports.append(llm.OllamaTransport(model=model_override))
+		# enable thinking mode on model families that support it; harmless on others
+		want_think = _model_supports_thinking(model_override)
+		transports.append(llm.OllamaTransport(model=model_override, think=want_think))
 	client = llm.LLMClient(transports=transports, quiet=True)
 	return client
 

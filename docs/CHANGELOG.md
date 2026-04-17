@@ -2,6 +2,12 @@
 
 ## 2026-04-17
 
+### Documentation
+- Rewrite the README summary to emphasize user-facing capabilities, local
+  generation, and the kinds of prompts the app is best suited for.
+
+## 2026-04-17
+
 ### Additions and New Features
 - Add a local text-to-scene web app with a TypeScript frontend and a Python backend.
 - Add a shared scene contract with deterministic SVG rendering and a first-class `star` primitive.
@@ -25,3 +31,5 @@
 
 ### Decisions and Failures
 - Considered dropping JSON entirely for direct SVG or a custom DSL and rejected both for now: the evidence points at the prompt shape as the dominant problem, so prompt cleanup plus tag-wrapped JSON plus retry is the minimum-risk fix. Direct SVG remains on the table if model-vs-JSON failures persist after these changes.
+- Enable Ollama thinking mode for thinking-capable model families (gemma3, gemma4, qwen3, deepseek-r1). Adds opt-in `think` parameter to the vendored `OllamaTransport`, and `backend/scene_generator.py` matches the request's model name against a prefix list to decide whether to set it. Models that do not support thinking ignore the field silently. Expected cost: slower inference on thinking-enabled cells; expected benefit: fewer geometry and color omissions (missing strokes, stacked centers) that the rubric currently penalizes.
+- Adopt a benchmark-hygiene rule for `backend/prompts/scene_examples.json`: few-shot examples must not be isomorphic to any validation-prompt answer shape at the construction-recipe level (same leaf-shape count, same arrangement, same decomposition into the same primitive types, or near-identical topology). Same prompt text or same abstract pattern (repetition, symmetry) is fine; handing the model the same recipe the rubric checks is not. Reason: a first rays example (central circle + 8 radial lines) was a near-answer for the `sun_eight_rays` validation prompt, which would have made score movement on that prompt uninterpretable. Replaced it with a compass-tick-ring (central rect + 8 short tangential ticks) that teaches 8-way radial placement without being the answer shape.
